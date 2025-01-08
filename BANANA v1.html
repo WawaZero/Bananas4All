@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banana Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 24px;
+            color: #333;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            max-width: 90%;
+            margin: 0 auto;
+            visibility: hidden; /* Initially hidden */
+        }
+        #loading {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #666;
+            display: none; /* Initially hidden */
+        }
+    </style>
+</head>
+<body>
+    <h1>Banana Generator</h1>
+    <button id="bananaButton">Banana</button>
+    <div id="loading">Loading...</div>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('bananaButton').addEventListener('click', function() {
+            const number = prompt("Enter a number:");
+            const count = parseInt(number, 10);
+            const loadingElement = document.getElementById('loading');
+            const resultElement = document.getElementById('result');
+
+            if (!isNaN(count) && count > 1) {
+                const bananaWord = "Ba" + "na".repeat(count);
+                
+                loadingElement.style.display = "block"; // Show loading
+                resultElement.style.visibility = "hidden"; // Hide result
+                resultElement.textContent = bananaWord;
+
+                const speech = new SpeechSynthesisUtterance(bananaWord);
+
+                speech.onstart = function() {
+                    loadingElement.style.display = "none"; // Hide loading when audio starts
+                    resultElement.style.visibility = "visible"; // Show result
+                };
+
+                window.speechSynthesis.speak(speech);
+            } else {
+                const errorMessage = "Please enter a valid positive number above 1.";
+
+                loadingElement.style.display = "block"; // Show loading
+                resultElement.style.visibility = "hidden"; // Hide result
+                resultElement.textContent = errorMessage;
+
+                const speech = new SpeechSynthesisUtterance(errorMessage);
+
+                speech.onstart = function() {
+                    loadingElement.style.display = "none"; // Hide loading when audio starts
+                    resultElement.style.visibility = "visible"; // Show result
+                };
+
+                window.speechSynthesis.speak(speech);
+            }
+        });
+    </script>
+</body>
+</html>
